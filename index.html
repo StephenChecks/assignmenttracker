@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Work App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="bi bi-mortarboard-fill me-2"></i>School Work App</a>
+            <div class="navbar-nav ms-auto">
+                <button class="btn btn-outline-light me-2" id="dark-mode-toggle">
+                    <i class="bi bi-moon-fill"></i>
+                </button>
+                <button class="btn btn-outline-light" id="timer-toggle">
+                    <i class="bi bi-stopwatch"></i> Timer
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Dashboard Stats -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-primary"><i class="bi bi-list-task"></i></div>
+                    <div class="stat-info">
+                        <h3 id="total-assignments">0</h3>
+                        <p>Total Assignments</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-success"><i class="bi bi-check-circle"></i></div>
+                    <div class="stat-info">
+                        <h3 id="completed-assignments">0</h3>
+                        <p>Completed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-warning"><i class="bi bi-clock"></i></div>
+                    <div class="stat-info">
+                        <h3 id="pending-assignments">0</h3>
+                        <p>Pending</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-info"><i class="bi bi-star-fill"></i></div>
+                    <div class="stat-info">
+                        <h3 id="average-grade">-</h3>
+                        <p>Avg Grade</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Study Timer -->
+        <div class="card mb-4" id="timer-card" style="display: none;">
+            <div class="card-header">
+                <h5><i class="bi bi-stopwatch me-2"></i>Study Timer</h5>
+            </div>
+            <div class="card-body text-center">
+                <div class="timer-display mb-3">
+                    <span id="timer-minutes">25</span>:<span id="timer-seconds">00</span>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-success" id="start-timer">Start</button>
+                    <button type="button" class="btn btn-warning" id="pause-timer">Pause</button>
+                    <button type="button" class="btn btn-danger" id="reset-timer">Reset</button>
+                </div>
+                <div class="mt-3">
+                    <small class="text-muted">Pomodoro Technique: 25 min work, 5 min break</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Add New Assignment</h5>
+            </div>
+            <div class="card-body">
+                <form id="assignment-form">
+                    <div class="mb-3">
+                        <label for="assignment-name" class="form-label">Assignment Name</label>
+                        <input type="text" class="form-control" id="assignment-name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="due-date" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="due-date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <select class="form-select" id="subject" required>
+                            <option value="">Select a subject</option>
+                            <option value="math">Math</option>
+                            <option value="science">Science</option>
+                            <option value="english">English</option>
+                            <option value="history">History</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="priority" class="form-label">Priority</label>
+                        <select class="form-select" id="priority" required>
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description/Notes</label>
+                        <textarea class="form-control" id="description" rows="3" placeholder="Add any notes or description..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="grade" class="form-label">Expected/Received Grade</label>
+                        <input type="number" class="form-control" id="grade" min="0" max="100" placeholder="Enter grade (0-100)">
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Add Assignment</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5><i class="bi bi-list-ul me-2"></i>My Assignments</h5>
+                <div>
+                    <div class="btn-group" role="group">
+                        <button id="view-list" class="btn btn-sm btn-outline-secondary active"><i class="bi bi-list"></i></button>
+                        <button id="view-calendar" class="btn btn-sm btn-outline-secondary"><i class="bi bi-calendar"></i></button>
+                    </div>
+                    <button id="sort-by-date" class="btn btn-sm btn-outline-secondary me-2 ms-2">Date</button>
+                    <button id="sort-by-priority" class="btn btn-sm btn-outline-secondary">Priority</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="assignments-list">
+                    <!-- Assignments will be added here dynamically -->
+                    <p class="text-muted text-center my-4" id="no-assignments">No assignments yet. Add one above!</p>
+                </div>
+                <div id="calendar-view" style="display: none;">
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <button class="btn btn-sm btn-outline-primary" id="prev-month"><i class="bi bi-chevron-left"></i></button>
+                            <h6 id="current-month"></h6>
+                            <button class="btn btn-sm btn-outline-primary" id="next-month"><i class="bi bi-chevron-right"></i></button>
+                        </div>
+                        <div class="calendar-grid" id="calendar-grid">
+                            <!-- Calendar will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
